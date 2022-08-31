@@ -16,7 +16,7 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: false,
-      debug: false,
+      // debug: false,
     },
   },
 };
