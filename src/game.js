@@ -16,20 +16,20 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: false,
-      // debug: false,
+      debug: false,
     },
   },
 };
 
 const game = new Phaser.Game(config);
-
+let mode = "";
 let player1, player2, ball, cursors;
 const keys = {};
 let gameStarted = false;
 let restart = false;
-let openingText, player1VictoryText, player2VictoryText, scoresText;
+let openingText, player1VictoryText, player2VictoryText, scoresText, modeText;
 let touches = 0;
-let increaseSpeed = false;
+// let increaseSpeed = false;
 let starting = 1;
 const scores = { p1: 0, p2: 0 };
 function preload() {
@@ -121,8 +121,20 @@ function create() {
     }
   );
   scoresText.setOrigin(0.5);
-  // Make it invisible until the player loses
   scoresText.setVisible(false);
+
+  modeText = this.add.text(
+    this.physics.world.bounds.width / 2,
+    this.physics.world.bounds.height - (ball.body.width / 2 + 10),
+    `Single Player`,
+    {
+      fontSize: "20px",
+      fill: "#fff",
+    }
+  );
+  modeText.setOrigin(0.5);
+  scoresText.setVisible(true);
+
   if (!gameStarted) {
     if (cursors.space.isDown) {
       scoresText.setVisible(true);
@@ -183,22 +195,30 @@ function update() {
   } else if (cursors.down.isDown) {
     player1.body.setVelocityY(350);
   }
-
-  // if (keys.w.isDown) {
-  //   player2.body.setVelocityY(-350);
-  // } else if (keys.s.isDown) {
-  //   player2.body.setVelocityY(350);
-  // }
-
-  if (ball.body.x < this.physics.world.bounds.width / 2) {
-    if (ball.body.y < player2.body.y) {
+  if (mode === "multi") {
+    if (keys.w.isDown) {
       player2.body.setVelocityY(-350);
-    } else if (ball.body.y > player2.body.y) {
+    } else if (keys.s.isDown) {
       player2.body.setVelocityY(350);
     }
+  } else {
+    if (ball.body.velocity.x < 0) {
+      if (
+        ball.body.x < this.physics.world.bounds.width / 2 + 100 &&
+        ball.body.x > player2.body.x
+      ) {
+        if (ball.body.x > 60) {
+          if (ball.body.y < player2.body.center.y) {
+            player2.body.setVelocityY(-350);
+          } else if (ball.body.y > player2.body.center.y) {
+            player2.body.setVelocityY(350);
+          }
+        }
+      }
+    }
   }
-
   if (!gameStarted) {
+    modeText.setText(mode === "multi" ? "2-Players" : "Single Player");
     if (cursors.space.isDown) {
       scoresText.setVisible(true);
       restart = false;
@@ -257,4 +277,17 @@ function randomNumber(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function setSingle() {
+  if (!gameStarted) {
+    console.log("Single");
+    mode = "single";
+  }
+}
+function setMulti() {
+  if (!gameStarted) {
+    console.log("Multiplayer");
+    mode = "multi";
+  }
 }

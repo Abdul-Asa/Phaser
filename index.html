@@ -11,13 +11,18 @@
       margin: 0 auto;
       padding: 0;
       width: 100%;
-      height: 100%;
+    }
+
+    .center {
+      display: flex;
+      justify-content: space-around;
+      padding: 0, 90px, 0, 90px;
     }
 
     #game {
-      margin: 10px auto;
+      margin: 20px auto;
       padding: 0;
-      width: 800px;
+      max-width: 1000px;
       height: 640px;
     }
   </style>
@@ -26,6 +31,10 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="game"></div>
+  <div class="center">
+    <button onclick={setMulti()}>2-player Game</button>
+    <button onclick={setSingle()}>Single player Game</button>
+  </div>
   <script src="./lib/phaser.min.js"></script>
   <script src="./src/game.js"></script>
 </body>
