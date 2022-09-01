@@ -30,8 +30,7 @@ let restart = false;
 let openingText, player1VictoryText, player2VictoryText, scoresText;
 let touches = 0;
 let increaseSpeed = false;
-let button;
-
+let starting = 1;
 const scores = { p1: 0, p2: 0 };
 function preload() {
   this.load.image("ball", "./assets/images/ball.png");
@@ -154,6 +153,7 @@ function create() {
 
 function update() {
   if (isPlayer1Point()) {
+    starting = 1;
     player1VictoryText.setVisible(true);
     ball.disableBody(true, true);
     gameStarted = false;
@@ -164,6 +164,7 @@ function update() {
     }
   }
   if (isPlayer2Point()) {
+    starting = -1;
     player2VictoryText.setVisible(true);
     ball.disableBody(true, true);
     gameStarted = false;
@@ -183,10 +184,18 @@ function update() {
     player1.body.setVelocityY(350);
   }
 
-  if (keys.w.isDown) {
-    player2.body.setVelocityY(-350);
-  } else if (keys.s.isDown) {
-    player2.body.setVelocityY(350);
+  // if (keys.w.isDown) {
+  //   player2.body.setVelocityY(-350);
+  // } else if (keys.s.isDown) {
+  //   player2.body.setVelocityY(350);
+  // }
+
+  if (ball.body.x < this.physics.world.bounds.width / 2) {
+    if (ball.body.y < player2.body.y) {
+      player2.body.setVelocityY(-350);
+    } else if (ball.body.y > player2.body.y) {
+      player2.body.setVelocityY(350);
+    }
   }
 
   if (!gameStarted) {
@@ -206,8 +215,8 @@ function update() {
       this.physics.add.collider(ball, player1, hitPlayer, null, this);
       this.physics.add.collider(ball, player2, hitPlayer, null, this);
       touches = 0;
-      const initialXSpeed = randomNumber(100, 200) + 50;
-      const initialYSpeed = randomNumber(100, 200) + 50;
+      const initialXSpeed = randomNumber(200, 300) * starting;
+      const initialYSpeed = randomNumber(-200, 200) + 50;
       ball.setVelocityX(initialXSpeed);
       ball.setVelocityY(initialYSpeed);
       openingText.setVisible(false);
@@ -217,6 +226,8 @@ function update() {
   }
   if (gameStarted) {
     if (keys.esc.isDown) {
+      scores.p1 = 0;
+      scores.p2 = 0;
       gameStarted = false;
       this.registry.destroy(); // destroy registry
       this.events.off();
@@ -236,7 +247,7 @@ function isPlayer2Point() {
 function hitPlayer() {
   touches += 1;
   console.log(touches);
-  if (touches % 5 == 0) {
+  if (touches % 4 == 0) {
     ball.setVelocityX(ball.body.velocity.x * 1.3);
     ball.setVelocityY(ball.body.velocity.y * 1.3);
   }
