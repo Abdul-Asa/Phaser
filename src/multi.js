@@ -1,11 +1,11 @@
-const config1 = {
+class multi {}
+const config2 = {
   type: Phaser.AUTO,
-  parent: "game1",
+  parent: "game2",
   width: 800,
   height: 640,
   scale: {
     mode: Phaser.Scale.RESIZE,
-
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   scene: {
@@ -23,15 +23,15 @@ const config1 = {
 };
 
 // const game = new Phaser.Game(config);
-let player1, player2, ball, cursors;
-const keys = {};
-let gameStarted = false;
-let restart = false;
-let openingText, player1VictoryText, player2VictoryText, scoresText, modeText;
-let touches = 0;
-// let increaseSpeed = false;
-let starting = 1;
-const scores = { p1: 0, p2: 0 };
+// let player1, player2, ball, cursors;
+// const keys = {};
+// let gameStarted = false;
+// let restart = false;
+// let openingText, player1VictoryText, player2VictoryText, scoresText, modeText;
+// let touches = 0;
+// // let increaseSpeed = false;
+// let starting = 1;
+// const scores = { p1: 0, p2: 0 };
 function preload() {
   this.load.image("ball", "./assets/images/ball.png");
   this.load.image("paddle", "./assets/images/paddle.png");
@@ -126,7 +126,7 @@ function create() {
   modeText = this.add.text(
     this.physics.world.bounds.width / 2,
     this.physics.world.bounds.height - (ball.body.width / 2 + 10),
-    `Single Player`,
+    `2-Players`,
     {
       fontSize: "20px",
       fill: "#fff",
@@ -195,20 +195,10 @@ function update() {
   } else if (cursors.down.isDown) {
     player1.body.setVelocityY(350);
   }
-
-  if (ball.body.velocity.x < 0) {
-    if (
-      ball.body.x < this.physics.world.bounds.width / 2 + 100 &&
-      ball.body.x > player2.body.x
-    ) {
-      if (ball.body.x > 60) {
-        if (ball.body.y < player2.body.center.y) {
-          player2.body.setVelocityY(-350);
-        } else if (ball.body.y > player2.body.center.y) {
-          player2.body.setVelocityY(350);
-        }
-      }
-    }
+  if (keys.w.isDown) {
+    player2.body.setVelocityY(-350);
+  } else if (keys.s.isDown) {
+    player2.body.setVelocityY(350);
   }
 
   if (!gameStarted) {

@@ -5,38 +5,55 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Pong</title>
-  <style>
-    html,
-    body {
-      margin: 0 auto;
-      padding: 0;
-      width: 100%;
-    }
-
-    .center {
-      display: flex;
-      justify-content: space-around;
-      padding: 0, 90px, 0, 90px;
-    }
-
-    #game {
-      margin: 20px auto;
-      padding: 0;
-      max-width: 1000px;
-      height: 640px;
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="game"></div>
-  <div class="center">
-    <button onclick={setMulti()}>2-player Game</button>
-    <button onclick={setSingle()}>Single player Game</button>
+  <!-- Home -->
+  <div class="wrapper" id="homePage">
+    <div class="row">
+      <h1>Ping Pong: The Canvas</h1>
+    </div>
+    <div class="grid">
+      <button class="button" id="btnSingle">Single player Game</button>
+      <button class="button" id="btnMulti">2-player Game</button>
+      <button class="button" id="btnOnline">Online Game</button>
+    </div>
   </div>
+
+  <!-- Single Player -->
+  <div class="wrapper" id="singlePage">
+    <div class="row">
+      <h1>Single Player</h1>
+    </div>
+    <div id="game1"></div>
+    <div class="row"> <button class="button" id="btnBack1">Back</button>
+    </div>
+  </div>
+
+  <!-- Local Multiplayer -->
+  <div class="wrapper" id="multiPage">
+    <div class="row">
+      <h1>2 Players</h1>
+    </div>
+    <div id="game2"></div>
+    <div class="row"> <button class="button" id="btnBack2">Back</button>
+    </div>
+  </div>
+
+  <!-- Online -->
+
+  <!-- Other -->
+
+  <!-- <div class="center">
+    <button class="button" onclick={setMulti()}>2-player Game</button>
+    <button class="button asyncButton" onclick={setSingle()}>Single player Game</button>
+  </div> -->
   <script src="./lib/phaser.min.js"></script>
   <script src="./src/game.js"></script>
+  <script src="./src/multi.js"></script>
+  <script src="./src/script.js"></script>
 </body>
 
 </html>
