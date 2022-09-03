@@ -36,7 +36,6 @@ body {
   margin: 12px 0;
   width: 30%;
 }
-
 .button {
   appearance: none;
   border: none;
@@ -53,7 +52,28 @@ body {
   border-radius: 2px;
   transition: all 0.15s;  position: relative;
 }
-
+.input{
+  appearance: none;
+  border: none;
+  background: none;
+  width: 50%;
+  font-size: 22px;
+  height: 38px;
+  padding-left: 12px;
+  padding-right: 12px;
+  outline: none;
+  border: 2px solid transparent;
+  color: rgb(112, 76, 182);
+  padding-bottom: 4px;
+  cursor: pointer;
+  border-color: rgba(112, 76, 182, 0.1);
+  border-radius: 2px;
+}
+.button_wrap{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .button:hover, .button:focus {
   border: 2px solid rgba(112, 76, 182, 0.4);
 }
@@ -77,32 +97,84 @@ body {
   opacity: 1;
   transition: 0s
 }
-
-
 #game1{
   margin: 10px auto;
   width: 1000px;
   height: 640px; 
 }
-
 #game2 {
   margin: 10px auto;
   width: 1000px;
   height: 640px; 
 }
-.value {
-  font-size: 78px;
-  padding-left: 16px;
-  padding-right: 16px;
-  margin-top: 2px;
-  font-family: 'Courier New', Courier, monospace;
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  /* overflow: auto; Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-.textbox {
-  font-size: 32px;
-  padding: 2px;
-  width: 64px;
-  text-align: center;
-  margin-right: 8px;
+
+/* Modal Content/Box */
+.modal-header {
+  padding: 10px 10px;
+ 
+}
+
+/* Modal Body */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+.modal-body>button {
+  margin: 12px 0;
+}
+
+/* Modal Footer */
+.modal-footer {
+  padding: 16px 16px;
+  
+}
+
+/* Modal Content */
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@keyframes animatetop {
+  from { top:-300px; opacity: 0}
+  to { top:0px; opacity: 1}
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 

@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "websocket": "^1.0.34"
+  },
+  "name": "phaser",
+  "description": "A basic two-player local Pong game using Phaser3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
+  "scripts": {
+    "dev": "nodemon index",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abdul-Asa/Phaser.git"
+  },
+  "author": "Asa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abdul-Asa/Phaser/issues"
+  },
+  "homepage": "https://github.com/Abdul-Asa/Phaser#readme"
+}
