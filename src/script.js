@@ -15,7 +15,7 @@ let btn = document.getElementById("btnOnline");
 let span = document.getElementsByClassName("close")[0];
 const txtGameId = document.getElementById("txtGameId");
 
-ws = new WebSocket("'wss://ping-pong-websockets.herokuapp.com/'");
+ws = new WebSocket("wss://ping-pong-websockets.herokuapp.com/");
 let clientId = null;
 let gameId = null;
 
