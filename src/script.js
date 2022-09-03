@@ -128,7 +128,7 @@ btnSingle.addEventListener("click", () => {
       homePage.style.display = "block";
       singlePage.style.display = "none";
     });
-  }, 1000);
+  }, 600);
 });
 
 btnMulti.addEventListener("click", () => {
@@ -141,7 +141,7 @@ btnMulti.addEventListener("click", () => {
       homePage.style.display = "block";
       multiPage.style.display = "none";
     });
-  }, 1000);
+  }, 600);
 });
 
 btnCreate.onclick = () => {
