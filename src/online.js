@@ -43,6 +43,7 @@ class Pong extends netplayjs.Game {
 
   leftScore = 0;
   rightScore = 0;
+  hitCount = 0;
 
   constructor() {
     super();
@@ -136,6 +137,50 @@ class Pong extends netplayjs.Game {
       this.ballVelocity[0] = -this.ballVelocity[0];
       this.ballVelocity[1] = BALL_MOVE_SPEED * Math.sin(2 * offset);
       this.ballPosition[0] = RIGHT_PADDLE_X - BALL_WIDTH;
+    }
+
+    if (
+      rectOverlap(
+        this.ballPosition[0],
+        this.ballPosition[0] + BALL_WIDTH,
+        this.ballPosition[1],
+        this.ballPosition[1] + BALL_HEIGHT,
+        LEFT_PADDLE_X,
+        LEFT_PADDLE_X + PADDLE_WIDTH,
+        this.leftPaddle,
+        this.leftPaddle + PADDLE_HEIGHT
+      )
+    ) {
+      this.hitCount += 1;
+
+      if (this.hitCount === 7) {
+        this.ballVelocity[0] *= 1.1; // Increase by 10%
+        this.ballVelocity[1] *= 1.1; // Increase by 10%
+        this.hitCount = 0;
+      }
+    }
+
+    if (
+      rectOverlap(
+        this.ballPosition[0],
+        this.ballPosition[0] + BALL_WIDTH,
+        this.ballPosition[1],
+        this.ballPosition[1] + BALL_HEIGHT,
+        RIGHT_PADDLE_X,
+        RIGHT_PADDLE_X + PADDLE_WIDTH,
+        this.rightPaddle,
+        this.rightPaddle + PADDLE_HEIGHT
+      )
+    ) {
+      this.hitCount += 1;
+
+      if (this.hitCount === 7) {
+        this.ballVelocity[0] *= 1.1; // Increase by 10%
+        this.ballVelocity[1] *= 1.1; // Increase by 10%
+        this.hitCount = 0;
+      }
+
+      // ... existing code ...
     }
 
     if (this.ballPosition[0] > PONG_WIDTH) {
