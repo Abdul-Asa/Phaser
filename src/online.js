@@ -1,262 +1,196 @@
-const config3 = {
-  type: Phaser.AUTO,
-  parent: "game3",
-  width: 800,
-  height: 640,
-  scale: {
-    mode: Phaser.Scale.RESIZE,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-  },
-  scene: {
-    preload,
-    create,
-    update,
-  },
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: false,
-      debug: false,
-    },
-  },
-};
+const [PONG_WIDTH, PONG_HEIGHT] = [600, 300];
+const [PADDLE_WIDTH, PADDLE_HEIGHT] = [10, 100];
+const [BALL_WIDTH, BALL_HEIGHT] = [10, 10];
 
-// const game = new Phaser.Game(config);
-// let player1, player2, ball, cursors;
-// const keys = {};
-// let gameStarted = false;
-// let restart = false;
-// let openingText, player1VictoryText, player2VictoryText, scoresText, modeText;
-// let touches = 0;
-// // let increaseSpeed = false;
-// let starting = 1;
-// const scores = { p1: 0, p2: 0 };
-function preload() {
-  this.load.image("ball", "./assets/images/ball.png");
-  this.load.image("paddle", "./assets/images/paddle.png");
+const LEFT_PADDLE_X = 0 + 100;
+const RIGHT_PADDLE_X = PONG_WIDTH - 100 - PADDLE_WIDTH;
+
+const PADDLE_MOVE_SPEED = 300;
+const BALL_MOVE_SPEED = 300;
+
+/** Clamps a value between min and max. */
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
 }
 
-function create() {
-  ball = this.physics.add.sprite(
-    this.physics.world.bounds.width / 2, // x position
-    this.physics.world.bounds.height / 2, // y position
-    "ball" // key of image for the sprite
-  );
-  ball.disableBody(true, true);
-
-  player1 = this.physics.add.sprite(
-    this.physics.world.bounds.width - (ball.body.width / 2 + 10), // x position
-    this.physics.world.bounds.height / 2, // y position
-    "paddle" // key of image for the sprite
-  );
-  player2 = this.physics.add.sprite(
-    ball.body.width / 2 + 10, // x position
-    this.physics.world.bounds.height / 2, // y position
-    "paddle" // key of image for the sprite
-  );
-
-  cursors = this.input.keyboard.createCursorKeys();
-  keys.w = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-  keys.s = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-  keys.esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
-  player1.setCollideWorldBounds(true);
-  player2.setCollideWorldBounds(true);
-  ball.setCollideWorldBounds(true);
-  ball.setBounce(1, 1);
-  player1.setImmovable(true);
-  player2.setImmovable(true);
-  this.physics.add.collider(ball, player1, null, null, this);
-  this.physics.add.collider(ball, player2, null, null, this);
-
-  openingText = this.add.text(
-    this.physics.world.bounds.width / 2,
-    this.physics.world.bounds.height / 2,
-    "Press SPACE to Start \n Press ESC to End",
-    {
-      fontSize: "40px",
-      fill: "#fff",
-    }
-  );
-  openingText.setOrigin(0.5);
-
-  // Create player 1 victory text
-  player1VictoryText = this.add.text(
-    this.physics.world.bounds.width / 2,
-    this.physics.world.bounds.height / 2,
-    "Point for player 1!",
-    {
-      fontFamily: "Monaco, Courier, monospace",
-      fontSize: "40px",
-      fill: "#fff",
-    }
-  );
-  player1VictoryText.setOrigin(0.5);
-  // Make it invisible until the player loses
-  player1VictoryText.setVisible(false);
-
-  // Create the game won text
-  player2VictoryText = this.add.text(
-    this.physics.world.bounds.width / 2,
-    this.physics.world.bounds.height / 2,
-    "Point for player 2!",
-    {
-      fontFamily: "Monaco, Courier, monospace",
-      fontSize: "40px",
-      fill: "#fff",
-    }
-  );
-  player2VictoryText.setOrigin(0.5);
-  // Make it invisible until the player wins
-  player2VictoryText.setVisible(false);
-
-  scoresText = this.add.text(
-    this.physics.world.bounds.width / 2,
-    ball.body.width / 2 + 10,
-    `${scores.p1} : ${scores.p2}`,
-    {
-      fontSize: "20px",
-      fill: "#fff",
-    }
-  );
-  scoresText.setOrigin(0.5);
-  scoresText.setVisible(false);
-
-  modeText = this.add.text(
-    this.physics.world.bounds.width / 2,
-    this.physics.world.bounds.height - (ball.body.width / 2 + 10),
-    `2-Players`,
-    {
-      fontSize: "20px",
-      fill: "#fff",
-    }
-  );
-  modeText.setOrigin(0.5);
-  scoresText.setVisible(true);
-
-  if (!gameStarted) {
-    if (cursors.space.isDown) {
-      scoresText.setVisible(true);
-      restart = false;
-      gameStarted = true;
-      ball = this.physics.add.sprite(
-        this.physics.world.bounds.width / 2, // x position
-        this.physics.world.bounds.height / 2, // y position
-        "ball" // key of image for the sprite
-      );
-      ball.setCollideWorldBounds(true);
-      ball.setBounce(1, 1);
-      player1.setImmovable(true);
-      player2.setImmovable(true);
-      this.physics.add.collider(ball, player1, hitPlayer, null, this);
-      this.physics.add.collider(ball, player2, hitPlayer, null, this);
-      touches = 0;
-      const initialXSpeed = randomNumber(100, 200) + 50;
-      const initialYSpeed = randomNumber(100, 200) + 50;
-      ball.setVelocityX(initialXSpeed);
-      ball.setVelocityY(initialYSpeed);
-      openingText.setVisible(false);
-      player1VictoryText.setVisible(false);
-      player2VictoryText.setVisible(false);
-    }
-  }
+/** Check if two rectangles A and B overlap. */
+function rectOverlap(
+  aLeft,
+  aRight,
+  aTop,
+  aBottom,
+  bLeft,
+  bRight,
+  bTop,
+  bBottom
+) {
+  return aLeft < bRight && aRight > bLeft && aTop < bBottom && aBottom > bTop;
 }
 
-function update() {
-  if (isPlayer1Point()) {
-    starting = 1;
-    player1VictoryText.setVisible(true);
-    ball.disableBody(true, true);
-    gameStarted = false;
-    if (!restart) {
-      scores.p1 += 1;
-      restart = true;
-      scoresText.setText(`${scores.p2} : ${scores.p1}`);
-    }
+class Pong extends netplayjs.Game {
+  static timestep = 1000 / 60;
+  static canvasSize = { width: PONG_WIDTH, height: PONG_HEIGHT };
+  static highDPI = true;
+
+  leftPaddle = PONG_HEIGHT / 2 - PADDLE_HEIGHT / 2;
+  rightPaddle = PONG_HEIGHT / 2 - PADDLE_HEIGHT / 2;
+
+  ballPosition = [
+    PONG_WIDTH / 2 - BALL_WIDTH / 2,
+    PONG_HEIGHT / 2 - BALL_HEIGHT / 2,
+  ];
+  ballVelocity = [BALL_MOVE_SPEED, 0];
+
+  leftScore = 0;
+  rightScore = 0;
+
+  constructor() {
+    super();
   }
-  if (isPlayer2Point()) {
-    starting = -1;
-    player2VictoryText.setVisible(true);
-    ball.disableBody(true, true);
-    gameStarted = false;
-    if (!restart) {
-      scores.p2 += 1;
-      restart = true;
-      scoresText.setText(`${scores.p2} : ${scores.p1}`);
+
+  tick(playerInputs) {
+    // The delta time in seconds.
+    let dt = Pong.timestep / 1000;
+
+    // Move paddles up and down.
+    for (const [player, input] of playerInputs.entries()) {
+      const direction =
+        (input.keysHeld["ArrowDown"] ? 1 : 0) +
+        (input.keysHeld["ArrowUp"] ? -1 : 0);
+
+      let paddlePos = null;
+      if (input.touches.length > 0) {
+        paddlePos = input.touches[0].y - PADDLE_HEIGHT / 2;
+      } else if (input.mousePosition) {
+        paddlePos = input.mousePosition.y - PADDLE_HEIGHT / 2;
+      }
+
+      if (player.getID() == 0) {
+        if (paddlePos) this.leftPaddle = paddlePos;
+        else this.leftPaddle += direction * PADDLE_MOVE_SPEED * dt;
+      } else if (player.getID() == 1) {
+        if (paddlePos) this.rightPaddle = paddlePos;
+        else this.rightPaddle += direction * PADDLE_MOVE_SPEED * dt;
+      }
+    }
+
+    // Clamp paddles onto the screen.
+    this.leftPaddle = clamp(this.leftPaddle, 0, PONG_HEIGHT - PADDLE_HEIGHT);
+    this.rightPaddle = clamp(this.rightPaddle, 0, PONG_HEIGHT - PADDLE_HEIGHT);
+
+    // Apply ball velocity.
+    this.ballPosition[0] += this.ballVelocity[0] * dt;
+    this.ballPosition[1] += this.ballVelocity[1] * dt;
+
+    // Bounce ball on bottom / top of screen.
+    if (this.ballPosition[1] < 0) {
+      this.ballPosition[1] = 0;
+      this.ballVelocity[1] = -this.ballVelocity[1];
+    }
+    if (this.ballPosition[1] > PONG_HEIGHT - BALL_HEIGHT) {
+      this.ballPosition[1] = PONG_HEIGHT - BALL_HEIGHT;
+      this.ballVelocity[1] = -this.ballVelocity[1];
+    }
+
+    if (
+      rectOverlap(
+        this.ballPosition[0],
+        this.ballPosition[0] + BALL_WIDTH,
+        this.ballPosition[1],
+        this.ballPosition[1] + BALL_HEIGHT,
+        LEFT_PADDLE_X,
+        LEFT_PADDLE_X + PADDLE_WIDTH,
+        this.leftPaddle,
+        this.leftPaddle + PADDLE_HEIGHT
+      )
+    ) {
+      let offset =
+        (this.ballPosition[1] +
+          BALL_HEIGHT / 2 -
+          (this.leftPaddle + PADDLE_HEIGHT / 2)) /
+        PADDLE_HEIGHT;
+
+      this.ballVelocity[0] = -this.ballVelocity[0];
+      this.ballVelocity[1] = BALL_MOVE_SPEED * Math.sin(2 * offset);
+      this.ballPosition[0] = LEFT_PADDLE_X + PADDLE_WIDTH;
+    }
+
+    if (
+      rectOverlap(
+        this.ballPosition[0],
+        this.ballPosition[0] + BALL_WIDTH,
+        this.ballPosition[1],
+        this.ballPosition[1] + BALL_HEIGHT,
+        RIGHT_PADDLE_X,
+        RIGHT_PADDLE_X + PADDLE_WIDTH,
+        this.rightPaddle,
+        this.rightPaddle + PADDLE_HEIGHT
+      )
+    ) {
+      let offset =
+        (this.ballPosition[1] +
+          BALL_HEIGHT / 2 -
+          (this.rightPaddle + PADDLE_HEIGHT / 2)) /
+        PADDLE_HEIGHT;
+
+      this.ballVelocity[0] = -this.ballVelocity[0];
+      this.ballVelocity[1] = BALL_MOVE_SPEED * Math.sin(2 * offset);
+      this.ballPosition[0] = RIGHT_PADDLE_X - BALL_WIDTH;
+    }
+
+    if (this.ballPosition[0] > PONG_WIDTH) {
+      this.leftScore += 1;
+      this.ballPosition = [
+        PONG_WIDTH / 2 - BALL_WIDTH / 2,
+        PONG_HEIGHT / 2 - BALL_HEIGHT / 2,
+      ];
+      this.ballVelocity = [-BALL_MOVE_SPEED, 0];
+    }
+    if (this.ballPosition[0] < -BALL_HEIGHT) {
+      this.rightScore += 1;
+      this.ballPosition = [
+        PONG_WIDTH / 2 - BALL_WIDTH / 2,
+        PONG_HEIGHT / 2 - BALL_HEIGHT / 2,
+      ];
+      this.ballVelocity = [BALL_MOVE_SPEED, 0];
     }
   }
 
-  player1.body.setVelocityY(0);
-  player2.body.setVelocityY(0);
+  draw(canvas) {
+    const ctx = canvas.getContext("2d");
 
-  if (cursors.up.isDown) {
-    player1.body.setVelocityY(-350);
-  } else if (cursors.down.isDown) {
-    player1.body.setVelocityY(350);
-  }
-  if (keys.w.isDown) {
-    player2.body.setVelocityY(-350);
-  } else if (keys.s.isDown) {
-    player2.body.setVelocityY(350);
-  }
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  if (!gameStarted) {
-    if (cursors.space.isDown) {
-      scoresText.setVisible(true);
-      restart = false;
-      gameStarted = true;
-      ball = this.physics.add.sprite(
-        this.physics.world.bounds.width / 2, // x position
-        this.physics.world.bounds.height / 2, // y position
-        "ball" // key of image for the sprite
-      );
-      ball.setCollideWorldBounds(true);
-      ball.setBounce(1, 1);
-      player1.setImmovable(true);
-      player2.setImmovable(true);
-      this.physics.add.collider(ball, player1, hitPlayer, null, this);
-      this.physics.add.collider(ball, player2, hitPlayer, null, this);
-      touches = 0;
-      const initialXSpeed = randomNumber(200, 300) * starting;
-      const initialYSpeed = randomNumber(-200, 200) + 50;
-      ball.setVelocityX(initialXSpeed);
-      ball.setVelocityY(initialYSpeed);
-      openingText.setVisible(false);
-      player1VictoryText.setVisible(false);
-      player2VictoryText.setVisible(false);
-    }
-  }
-  if (gameStarted) {
-    if (keys.esc.isDown) {
-      scores.p1 = 0;
-      scores.p2 = 0;
-      gameStarted = false;
-      this.registry.destroy(); // destroy registry
-      this.events.off();
-      this.scene.restart();
-    }
+    // Draw paddles.
+    ctx.fillStyle = "white";
+    ctx.fillRect(LEFT_PADDLE_X, this.leftPaddle, PADDLE_WIDTH, PADDLE_HEIGHT);
+    ctx.fillStyle = "white";
+    ctx.fillRect(RIGHT_PADDLE_X, this.rightPaddle, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+    // Draw ball.
+    ctx.fillStyle = "white";
+    ctx.fillRect(
+      this.ballPosition[0],
+      this.ballPosition[1],
+      BALL_WIDTH,
+      BALL_HEIGHT
+    );
+
+    // Draw scores.
+    ctx.font = "40px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      this.leftScore.toString(),
+      PONG_WIDTH * 0.3,
+      PONG_HEIGHT * 0.2
+    );
+    ctx.fillText(
+      this.rightScore.toString(),
+      PONG_WIDTH * 0.7,
+      PONG_HEIGHT * 0.2
+    );
   }
 }
 
-function isPlayer1Point() {
-  return ball.body.x < player2.body.x;
-}
-
-function isPlayer2Point() {
-  return ball.body.x > player1.body.x;
-}
-
-function hitPlayer() {
-  touches += 1;
-  console.log(touches);
-  if (touches % 4 == 0) {
-    ball.setVelocityX(ball.body.velocity.x * 1.3);
-    ball.setVelocityY(ball.body.velocity.y * 1.3);
-  }
-}
-
-function randomNumber(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+new netplayjs.RollbackWrapper(Pong).start();

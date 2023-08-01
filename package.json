@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "netplayjs": "^0.4.1",
     "websocket": "^1.0.34"
   },
   "name": "phaser",

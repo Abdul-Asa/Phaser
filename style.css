@@ -192,3 +192,23 @@ body {
     font-size: 22px;
   }
 }
+
+/* Default styles for both mobile and desktop */
+.desktop-div {
+  display: block; /* Default display for desktop-div */
+}
+
+.mobile-div {
+  display: none; /* Default display for mobile-div */
+}
+
+/* Media query for mobile devices */
+@media (max-width: 900px) {
+  .desktop-div {
+    display: none; /* Hide desktop-div on mobile */
+  }
+
+  .mobile-div {
+    display: block; /* Show mobile-div on mobile */
+  }
+}

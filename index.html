@@ -1,88 +1,79 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <title>Pong</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <title>Pong</title>
-  <link rel="stylesheet" href="./style.css" />
-</head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
 
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <!-- Home -->
-  <div class="wrapper" id="homePage">
-    <div class="row">
-      <h1>Ping Pong: The Canvas</h1>
-    </div>
-    <div class="grid">
-      <button class="button" id="btnSingle">Single player Game</button>
-      <button class="button" id="btnMulti">2-player Game</button>
-      <button class="button" id="btnOnline">Online Game</button>
-    </div>
+    <div class="desktop-div">
+     <!-- Home -->
+<section class="wrapper" id="homePage">
+  <div class="row">
+    <h1>Ping Pong: The Canvas</h1>
   </div>
-
-  <!-- Single Player -->
-  <div class="wrapper" id="singlePage">
-    <div class="row">
-      <h1>Single Player</h1>
-    </div>
-    <div id="game1"></div>
-    <div class="row"> <button class="button" id="btnBack1">Back</button>
-    </div>
+  <div class="grid">
+    <button class="button" id="btnSingle">Single player Game</button>
+    <button class="button" id="btnMulti">Local multiplayer Game</button>
+    <button class="button" id="btnOnline">Online Game</button>
   </div>
+</section>
 
-  <!-- Local Multiplayer -->
-  <div class="wrapper" id="multiPage">
-    <div class="row">
-      <h1>2 Players</h1>
-    </div>
-    <div id="game2"></div>
-    <div class="row"> <button class="button" id="btnBack2">Back</button>
-    </div>
+<!-- Single Player -->
+<section class="wrapper" id="singlePage">
+  <div class="row">
+    <h1>Single Player</h1>
   </div>
+  <div id="game1"></div>
+  <div class="row"><button class="button" id="btnBack1">Back</button></div>
+</section>
 
-  <!-- Online -->
-  <!-- <div class="wrapper" id="onlinePage">
-    <div class="row">
-      <h1>Online</h1>
-    </div>
-    <!-- <div id="game2"></div> -->
-  <!-- <h1>Online game</h1>
-  <div class="row"> <button class="button">Back</button>
+<!-- Local Multiplayer -->
+<section class="wrapper" id="multiPage">
+  <div class="row">
+    <h1>Local Multiplayer</h1>
   </div>
-  </div> -->
-  <!-- Modal content -->
-  <div id="myModal" class="modal">
+  <div id="game2"></div>
+  <div class="row"><button class="button" id="btnBack2">Back</button></div>
+</section>
 
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close">&times;</span>
-        <h2>Lobby</h2>
-      </div>
-      <div class="modal-body" id="modalContent">
-        <button class="button" id='btnCreate'>New Game</button>
-        <div class="button_wrap">
-          <input class="input" type='text' id='txtGameId'>
-          <button class="button" id='btnJoin'>Join Game</button>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <h3></h3>
+<!-- Online -->
+<div id="onlineModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Lobby</h2>
+    </div>
+    <div class="modal-body" id="modalContent">
+      <button class="button" id="btnCreate">New Game</button>
+      <div class="button_wrap">
+        <input class="input" type="text" id="txtGameId" />
+        <button class="button" id="btnJoin">Join Game</button>
       </div>
     </div>
-
+    <div class="modal-footer">
+      <h3></h3>
+    </div>
   </div>
-  <!-- Other -->
+</div>
+<!-- Other -->
+    </div>
 
-  <!-- <div class="center">
-    <button class="button" onclick={setMulti()}>2-player Game</button>
-    <button class="button asyncButton" onclick={setSingle()}>Single player Game</button>
-  </div> -->
+    <div class="mobile-div">
+      <!-- Content for mobile view -->
+      <h1>Sorry</h1>
+      <p>This content is not available for mobile devices or devices with small screens. Try using a bigger screen (atleast 1000px wide)</p>
+    </div>
+  </body>
   <script src="./lib/phaser.min.js"></script>
   <script src="./src/game.js"></script>
   <script src="./src/multi.js"></script>
   <script src="./src/script.js"></script>
-</body>
-
 </html>

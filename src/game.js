@@ -4,8 +4,8 @@ const config1 = {
   width: 800,
   height: 640,
   scale: {
-    mode: Phaser.Scale.RESIZE,
-
+    mode: Phaser.Scale.FIT, // The scaling mode to use
+    parent: "game1", // The parent DOM element to which the canvas will be added
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   scene: {
