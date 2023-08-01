@@ -55,6 +55,3 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
----
-
-Remember to replace all placeholders (like `https://github.com/yourusername/ping-pong-game.git`) with your actual data. For the game preview image, you need to add a screenshot of your game to the repository and then update the path accordingly.
