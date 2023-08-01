@@ -35,8 +35,11 @@ Install the required dependencies:
 ```bash
 npm install
 ```
-
-Then open the index.html file and enjoy!!!
+then start the server:
+```bash
+npm run start
+```
+Or open the index.html file and enjoy!!!
 
 ## How to Play
 
